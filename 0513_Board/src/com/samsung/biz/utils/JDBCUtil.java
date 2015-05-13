@@ -7,17 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class JDBCUtil {
-
-	public static Connection getConnection() {
-
+	
+	public static Connection getConnection(){
 		Connection conn = null;
-
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
-			String url = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
-			String user = "hr";
-			String password = "hr";
-			conn = DriverManager.getConnection(url, user, password);
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			conn = DriverManager.getConnection(url, "hr", "hr");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -25,50 +21,46 @@ public class JDBCUtil {
 		}
 		return conn;
 	}
-
-	public static void close(Connection conn, PreparedStatement ps, ResultSet rs) {
-
-		if (rs != null) {
+	
+	public static void close(Connection conn, PreparedStatement stmt, ResultSet rs){
+		if(conn != null){
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if(stmt != null){
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if(rs != null){
 			try {
 				rs.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		if (ps != null) {
-			try {
-				ps.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		if (conn != null) {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
 	}
-
-	public static void close(Connection conn, PreparedStatement ps) {
-
-		if (ps != null) {
-			try {
-				ps.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		if (conn != null) {
+	
+	public static void close(Connection conn, PreparedStatement stmt){
+		if(conn != null){
 			try {
 				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-
+		if(stmt != null){
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	
